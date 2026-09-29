@@ -1,0 +1,21 @@
+[package]
+name = "cshm"
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Profile schema: fields, types, versions and change classification"
+license = "LGPL-3.0-only WITH LGPL-3.0-linking-exception"
+repository = "https://github.com/corbet-foss/cshm"
+readme = "README.md"
+publish = false
+include = ["Cargo.toml", "src/**", "docs/CONTRACT.md", "README.md", "LICENSE", "LICENSE.md", "LICENSES/LGPL-3.0-only.txt", "LICENSES/LGPL-3.0-linking-exception.txt", "LICENSES/GPL-3.0-only.txt"]
+
+[dependencies]
+jsonschema = { version = "0.58.2", default-features = false, features = ["arbitrary-precision"] }
+rust_decimal = { version = "1.43", default-features = false, features = ["std", "serde-with-str"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["arbitrary_precision"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
