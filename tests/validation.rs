@@ -18,7 +18,8 @@ fn reasons(kind: FieldType, value: Value) -> Vec<ValidationReason> {
         .collect()
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn all_types_survive_real_json_round_trips_and_validate() {
     let schema = all_types();
     let encoded = serde_json::to_string(&schema).unwrap();
@@ -43,7 +44,8 @@ fn all_types_survive_real_json_round_trips_and_validate() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn integer_bounds_are_inclusive_and_do_not_round_large_integers() {
     for value in [json!(18), json!(120), json!(34), json!(18.0)] {
         assert!(reasons(integer(18, 120), value).is_empty());
@@ -68,7 +70,8 @@ fn integer_bounds_are_inclusive_and_do_not_round_large_integers() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn integer_default_bounds_cover_exactly_signed_64_bit_values() {
     let kind = FieldType::Integer {
         min: None,
@@ -88,7 +91,8 @@ fn integer_default_bounds_cover_exactly_signed_64_bit_values() {
     }
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn decimal_validation_preserves_sub_float_precision() {
     let kind = decimal(Some("0.1000000000000000001"), Some("0.1000000000000000002"));
     for number in [
@@ -115,7 +119,8 @@ fn decimal_validation_preserves_sub_float_precision() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn decimal_profile_round_trip_keeps_its_digits() {
     let value: Value = serde_json::from_str("0.1000000000000000001").unwrap();
     let profile = profile_with(value.clone());
@@ -134,7 +139,8 @@ fn decimal_profile_round_trip_keeps_its_digits() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn choice_uses_option_ids_not_labels_and_does_not_coerce() {
     let mut kind = choice(&["forest", "mountain"]);
     if let FieldType::Choice { options } = &mut kind {
@@ -151,7 +157,8 @@ fn choice_uses_option_ids_not_labels_and_does_not_coerce() {
     }
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn boolean_accepts_only_booleans() {
     for value in [json!(true), json!(false)] {
         assert!(reasons(FieldType::YesNo, value).is_empty());
@@ -170,7 +177,8 @@ fn boolean_accepts_only_booleans() {
     }
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn text_counts_unicode_scalars_and_preserves_whitespace() {
     for kind in [short(2, 2), long(2, 2)] {
         for text in ["é🌲", "e\u{301}", "\n "] {
@@ -189,7 +197,8 @@ fn text_counts_unicode_scalars_and_preserves_whitespace() {
     assert!(reasons(short(0, 0), json!("")).is_empty());
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn location_requires_only_two_bounded_numeric_coordinates() {
     for value in [
         json!({"latitude": -90, "longitude": -180}),
@@ -214,7 +223,8 @@ fn location_requires_only_two_bounded_numeric_coordinates() {
     }
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn required_and_optional_are_presence_rules_and_null_is_invalid() {
     let mut schema = schema_with(short(0, 10));
     let mut profile = profile_with(json!(""));
@@ -255,7 +265,8 @@ fn required_and_optional_are_presence_rules_and_null_is_invalid() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn public_validation_does_not_require_private_answers() {
     let compiled = all_types().compile().unwrap();
     let mut profile = complete_profile();
@@ -272,7 +283,8 @@ fn public_validation_does_not_require_private_answers() {
     assert_eq!(issues[0].reason, ValidationReason::MissingRequired);
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn misplaced_and_unknown_fields_are_rejected_without_echoing_them() {
     let compiled = all_types().compile().unwrap();
     let mut profile = complete_profile();
@@ -301,7 +313,8 @@ fn misplaced_and_unknown_fields_are_rejected_without_echoing_them() {
     assert_eq!(report, serde_json::from_str(&wire).unwrap());
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn community_and_revision_mismatches_short_circuit_content_checks() {
     let mut schema = schema_with(short(1, 40));
     schema.public[0].no_contact_details = true;
@@ -327,7 +340,8 @@ fn community_and_revision_mismatches_short_circuit_content_checks() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn compiled_revision_is_independent_of_later_definition_edits() {
     let mut schema = schema_with(integer(0, 10));
     let compiled = schema.compile().unwrap();
@@ -346,7 +360,8 @@ fn compiled_revision_is_independent_of_later_definition_edits() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn contact_checks_fail_closed_and_apply_to_both_parts() {
     let mut schema = schema_with(short(1, 60));
     schema.public[0].no_contact_details = true;
@@ -392,7 +407,8 @@ fn contact_checks_fail_closed_and_apply_to_both_parts() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn absent_unrestricted_and_oversized_text_do_not_invoke_contact_checker() {
     let mut schema = schema_with(short(1, 10));
     let checker = |_: &str| panic!("checker must not be called");
@@ -420,7 +436,8 @@ fn absent_unrestricted_and_oversized_text_do_not_invoke_contact_checker() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn empty_schema_accepts_empty_profiles_but_not_arbitrary_fields() {
     let mut schema = schema_with(FieldType::YesNo);
     schema.public.clear();
@@ -431,12 +448,87 @@ fn empty_schema_accepts_empty_profiles_but_not_arbitrary_fields() {
     assert!(compiled.validate_profile(&profile).is_valid());
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn all_field_types_reject_null_and_wrong_container_values() {
     let schema = all_types();
     for field in schema.public.iter().chain(&schema.private) {
         for value in [Value::Null, json!([])] {
             assert!(!reasons(field.kind.clone(), value).is_empty());
         }
+    }
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+fn hostile_exponents_are_rejected_before_exact_arithmetic() {
+    for text in [
+        "0.01e-9223372036854775807",
+        "1e9223372036854775807",
+        "1e129",
+        "1e-129",
+    ] {
+        let value: Value = serde_json::from_str(text).unwrap();
+        assert_eq!(
+            reasons(decimal(None, None), value.clone()),
+            vec![ValidationReason::NumberLimit]
+        );
+        assert_eq!(
+            reasons(integer(-10, 10), value.clone()),
+            vec![ValidationReason::NumberLimit]
+        );
+        assert_eq!(
+            reasons(FieldType::Location, json!({"latitude":value,"longitude":0})),
+            vec![ValidationReason::InvalidLocation]
+        );
+        assert!(cshm::parse_number(text).is_err());
+    }
+    assert!(cshm::parse_number(&format!("1.{}", "1".repeat(128))).is_err());
+    for text in ["1e128", "1e-128", "0", "-1.25e2"] {
+        assert!(cshm::parse_number(text).is_ok());
+    }
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+fn fractional_values_do_not_round_across_integral_bounds() {
+    for (min, max, text, expected) in [
+        (
+            Some("9007199254740993"),
+            None,
+            "9007199254740992.9",
+            Some(ValidationReason::BelowMinimum),
+        ),
+        (
+            None,
+            Some("-9007199254740993"),
+            "-9007199254740992.9",
+            Some(ValidationReason::AboveMaximum),
+        ),
+        (Some("9007199254740993"), None, "90071992547409930e-1", None),
+        (
+            None,
+            Some("-9007199254740993"),
+            "-90071992547409930e-1",
+            None,
+        ),
+    ] {
+        assert_eq!(
+            reasons(decimal(min, max), serde_json::from_str(text).unwrap()),
+            expected.into_iter().collect::<Vec<_>>()
+        );
+    }
+    for (latitude, longitude) in [
+        ("90.000000000000000001", "0"),
+        ("0", "-180.000000000000000001"),
+    ] {
+        let value = serde_json::from_str(&format!(
+            "{{\"latitude\":{latitude},\"longitude\":{longitude}}}"
+        ))
+        .unwrap();
+        assert_eq!(
+            reasons(FieldType::Location, value),
+            vec![ValidationReason::InvalidLocation]
+        );
     }
 }

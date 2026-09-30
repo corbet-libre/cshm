@@ -7,10 +7,12 @@
 #![doc = include_str!("../README.md")]
 
 mod changes;
+mod number;
 mod schema;
 mod validation;
 
 pub use changes::*;
+pub use number::{NumberError, parse_number};
 pub use rust_decimal::Decimal;
 pub use schema::*;
 pub use validation::*;

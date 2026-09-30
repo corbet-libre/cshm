@@ -15,7 +15,8 @@ fn classify(old: FieldType, new: FieldType) -> ChangeClass {
     classify_changes(&previous, &next).unwrap().fields[0].class
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn public_additions_removals_and_requiredness_follow_the_contract() {
     let previous = schema_with(FieldType::YesNo);
     let mut next = previous.clone();
@@ -51,7 +52,8 @@ fn public_additions_removals_and_requiredness_follow_the_contract() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn visibility_changes_never_publish_private_answers_implicitly() {
     let public = schema_with(FieldType::YesNo);
     let mut private = public.clone();
@@ -75,7 +77,8 @@ fn visibility_changes_never_publish_private_answers_implicitly() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn private_only_edits_additions_and_removals_stay_private() {
     let mut previous = schema_with(short(1, 100));
     previous.private = std::mem::take(&mut previous.public);
@@ -99,7 +102,8 @@ fn private_only_edits_additions_and_removals_stay_private() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn widening_and_narrowing_numbers_and_text_are_classified() {
     for (old, new, expected) in [
         (integer(1, 10), integer(0, 11), ChangeClass::Loosen),
@@ -135,7 +139,8 @@ fn widening_and_narrowing_numbers_and_text_are_classified() {
     }
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn numeric_representation_changes_are_conservative() {
     for (old, new, expected) in [
         (
@@ -169,7 +174,8 @@ fn numeric_representation_changes_are_conservative() {
     }
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn choice_additions_removals_and_presentation_changes_use_stable_ids() {
     assert_eq!(
         classify(choice(&["a"]), choice(&["a", "b"])),
@@ -194,7 +200,8 @@ fn choice_additions_removals_and_presentation_changes_use_stable_ids() {
     assert_eq!(classify(choice(&["a"]), renamed), ChangeClass::Loosen);
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn metadata_restrictions_and_mixed_changes_are_explicit() {
     let previous = schema_with(short(1, 100));
     let mut next = previous.clone();
@@ -223,7 +230,8 @@ fn metadata_restrictions_and_mixed_changes_are_explicit() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn every_preset_transition_has_the_expected_restriction_order() {
     let presets = [
         ChangePreset::Stable,
@@ -254,7 +262,8 @@ fn every_preset_transition_has_the_expected_restriction_order() {
     }
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn version_only_and_field_reordering_produce_no_field_changes() {
     let previous = all_types();
     let mut next = previous.clone();
@@ -268,7 +277,8 @@ fn version_only_and_field_reordering_produce_no_field_changes() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn field_renaming_is_removal_and_addition_and_changes_round_trip() {
     let previous = schema_with(FieldType::YesNo);
     let mut next = previous.clone();
@@ -285,7 +295,8 @@ fn field_renaming_is_removal_and_addition_and_changes_round_trip() {
     assert_eq!(decoded, changes);
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn invalid_definitions_wrong_community_and_nonincreasing_versions_fail() {
     let previous = schema_with(FieldType::YesNo);
     let mut next = previous.clone();
@@ -315,7 +326,8 @@ fn invalid_definitions_wrong_community_and_nonincreasing_versions_fail() {
     ));
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn loosened_integer_intervals_preserve_previously_valid_answers() {
     // Exercise the classification against the real validator, including intervals
     // that widen on one end and narrow on the other.
@@ -351,4 +363,32 @@ fn loosened_integer_intervals_preserve_previously_valid_answers() {
             }
         }
     }
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+fn decimal_tightening_matches_exact_fractional_validation_beyond_float_precision() {
+    let previous = schema_with(decimal(Some("9007199254740992"), None));
+    let mut next = schema_with(decimal(Some("9007199254740993"), None));
+    next.version = 2;
+    assert_eq!(
+        classify_changes(&previous, &next).unwrap().fields[0].class,
+        ChangeClass::Tighten
+    );
+    let mut profile = profile_with(serde_json::from_str("9007199254740992.9").unwrap());
+    assert!(
+        previous
+            .compile()
+            .unwrap()
+            .validate_profile(&profile)
+            .is_valid()
+    );
+    profile.schema_version = 2;
+    let violations = next
+        .compile()
+        .unwrap()
+        .validate_profile(&profile)
+        .violations;
+    assert_eq!(violations.len(), 1);
+    assert_eq!(violations[0].reason, cshm::ValidationReason::BelowMinimum);
 }

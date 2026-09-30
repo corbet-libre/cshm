@@ -65,7 +65,11 @@ additional bound; integers still retain their signed 64-bit domain. Profile
 numbers use arbitrary-precision JSON; parse them from original text to preserve
 digits. Already rounded floating-point values cannot be repaired by validation.
 Numbers are values, never age bands or categories. Nonfinite numbers are not
-JSON numbers. Text is not normalized, trimmed, or implicitly restricted to one
+JSON numbers. Numeric inputs are limited to 128 JSON bytes, explicit exponents
+in -128..=128, and resulting decimal scale in -128..=128. `parse_number`
+enforces these limits before BigDecimal parsing; numeric and coordinate bounds
+use exact comparisons without binary floating-point conversion. Excessive input
+produces `NumberLimit` (or `InvalidLocation` for a coordinate). Text is not normalized, trimmed, or implicitly restricted to one
 line. Short/long affects presentation; equal constraints accept equal strings.
 Decimal bound strings use the upstream exact parser: empty strings, overflow,
 and excess precision fail instead of becoming unbounded or being rounded.
@@ -154,7 +158,7 @@ revisions, definition errors, and the classification table. An interval matrix
 compares loosening to actual profile validation. No mocks of schema or validator
 logic, and no database fixtures for this storage-free library.
 
-CI runs native tests and compile-checks wasm32. Browser runtime execution and
+CI runs the same test cases natively and with the wasm-bindgen Node runner. Browser execution and
 generated language bindings remain integration work. Callers own payload and
 schema size limits before parsing, contact detection, cryptographic bundle
 binding, schema authenticity, pin/token enforcement, persistence, and applying

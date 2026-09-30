@@ -102,6 +102,8 @@ pub enum ValidationReason {
     UnexpectedField,
     /// A value has the wrong JSON type, including null.
     WrongType,
+    /// Numeric syntax exceeds the bounded exact-arithmetic budget.
+    NumberLimit,
     /// A choice answer is not a declared option identifier.
     UnknownChoice,
     /// A number is below its inclusive minimum.
@@ -283,21 +285,25 @@ impl CompiledSchema {
                 continue;
             };
             let mut reasons = BTreeSet::new();
-            for error in compiled.validator.iter_errors(value) {
-                let reason = if field.kind == FieldType::Location {
-                    ValidationReason::InvalidLocation
-                } else {
-                    match error.kind() {
-                        ValidationErrorKind::Type { .. } => ValidationReason::WrongType,
-                        ValidationErrorKind::Enum { .. } => ValidationReason::UnknownChoice,
-                        ValidationErrorKind::Minimum { .. } => ValidationReason::BelowMinimum,
-                        ValidationErrorKind::Maximum { .. } => ValidationReason::AboveMaximum,
-                        ValidationErrorKind::MinLength { .. } => ValidationReason::TextTooShort,
-                        ValidationErrorKind::MaxLength { .. } => ValidationReason::TextTooLong,
-                        _ => ValidationReason::ConstraintViolation,
-                    }
-                };
-                reasons.insert(reason);
+            if let Some(numeric) = crate::number::validate(&field.kind, value) {
+                reasons.extend(numeric);
+            } else {
+                for error in compiled.validator.iter_errors(value) {
+                    let reason = if field.kind == FieldType::Location {
+                        ValidationReason::InvalidLocation
+                    } else {
+                        match error.kind() {
+                            ValidationErrorKind::Type { .. } => ValidationReason::WrongType,
+                            ValidationErrorKind::Enum { .. } => ValidationReason::UnknownChoice,
+                            ValidationErrorKind::Minimum { .. } => ValidationReason::BelowMinimum,
+                            ValidationErrorKind::Maximum { .. } => ValidationReason::AboveMaximum,
+                            ValidationErrorKind::MinLength { .. } => ValidationReason::TextTooShort,
+                            ValidationErrorKind::MaxLength { .. } => ValidationReason::TextTooLong,
+                            _ => ValidationReason::ConstraintViolation,
+                        }
+                    };
+                    reasons.insert(reason);
+                }
             }
             // Avoid calling a content checker on structurally invalid or oversized text.
             if reasons.is_empty()

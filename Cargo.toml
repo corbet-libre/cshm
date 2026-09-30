@@ -11,10 +11,14 @@ publish = false
 include = ["Cargo.toml", "src/**", "docs/CONTRACT.md", "README.md", "LICENSE", "LICENSE.md", "LICENSES/LGPL-3.0-only.txt", "LICENSES/LGPL-3.0-linking-exception.txt", "LICENSES/GPL-3.0-only.txt"]
 
 [dependencies]
+bigdecimal = "0.4.11"
 jsonschema = { version = "0.58.2", default-features = false, features = ["arbitrary-precision"] }
 rust_decimal = { version = "1.43", default-features = false, features = ["std", "serde-with-str"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["arbitrary_precision"] }
+
+[target.'cfg(target_arch = "wasm32")'.dev-dependencies]
+wasm-bindgen-test = "0.3"
 
 [lints.rust]
 unsafe_code = "forbid"

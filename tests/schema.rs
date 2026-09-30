@@ -5,7 +5,8 @@ use common::*;
 use cshm::{FieldType, Profile, PublicProfile, Schema, SchemaIssueKind};
 use serde_json::json;
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn invalid_definition_reports_all_independent_issues() {
     let mut schema = schema_with(choice(&["a", "a", " "]));
     schema.community = "\n ".into();
@@ -38,7 +39,8 @@ fn invalid_definition_reports_all_independent_issues() {
     assert!(!errors.to_string().is_empty());
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn all_inverted_bounds_and_empty_choices_are_rejected() {
     for kind in [
         integer(10, 9),
@@ -60,7 +62,8 @@ fn all_inverted_bounds_and_empty_choices_are_rejected() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn equal_bounds_unbounded_numbers_and_zero_text_length_are_valid() {
     for kind in [
         integer(i64::MAX, i64::MAX),
@@ -74,7 +77,8 @@ fn equal_bounds_unbounded_numbers_and_zero_text_length_are_valid() {
     }
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn duplicate_field_ids_are_rejected_within_and_across_parts() {
     let mut schema = schema_with(FieldType::YesNo);
     schema.public.push(schema.public[0].clone());
@@ -89,7 +93,8 @@ fn duplicate_field_ids_are_rejected_within_and_across_parts() {
     );
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn malformed_and_unsupported_schema_wire_data_is_rejected() {
     let base = serde_json::to_value(schema_with(short(0, 40))).unwrap();
     let mut variants = Vec::new();
@@ -119,7 +124,8 @@ fn malformed_and_unsupported_schema_wire_data_is_rejected() {
     }
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn decimal_bounds_must_use_exact_decimal_strings() {
     let base = serde_json::to_value(schema_with(decimal(Some("0.1"), None))).unwrap();
     for invalid in [
@@ -138,7 +144,8 @@ fn decimal_bounds_must_use_exact_decimal_strings() {
     }
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn omitted_decimal_bounds_and_exact_extremes_round_trip() {
     let mut value = serde_json::to_value(schema_with(decimal(None, None))).unwrap();
     let kind = value["public"][0]["kind"].as_object_mut().unwrap();
@@ -165,7 +172,8 @@ fn omitted_decimal_bounds_and_exact_extremes_round_trip() {
     }
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn profiles_reject_unknown_envelope_fields_and_duplicate_answer_ids() {
     let duplicate_public = r#"{"community":"walking-club","schema_version":1,"public":{"answer":true,"answer":false},"private":{}}"#;
     let duplicate_private = r#"{"community":"walking-club","schema_version":1,"public":{},"private":{"answer":true,"answer":false}}"#;
@@ -180,7 +188,8 @@ fn profiles_reject_unknown_envelope_fields_and_duplicate_answer_ids() {
     assert!(serde_json::from_value::<Profile>(value).is_err());
 }
 
-#[test]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
 fn unusual_identifiers_are_literal_keys_and_never_json_schema_paths() {
     let mut schema = schema_with(FieldType::YesNo);
     schema.public[0].id = "a/~b.$ref".into();
