@@ -1,7 +1,7 @@
 # cshm contract as implemented
 
 Implements the `cshm` profile-schema leaf contract dated 2026-09-30, within the
-cvld v0.4 community policy facade (`cmnt` → `cplc` → `cshm`).
+cvld v0.4 community policy facade (`cmty` → `cplc` → `cshm`).
 
 ## Binding scope and boundaries
 
