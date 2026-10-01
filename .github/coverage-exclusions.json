@@ -1,0 +1,179 @@
+[
+  {
+    "file": "src/validation.rs",
+    "line": 185,
+    "source": ".map_err(|_| {",
+    "target": "native",
+    "reason": "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions.",
+    "evidence": "docs/COVERAGE.md#closed-schema-compilation",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 186,
+    "source": "SchemaErrors(vec![SchemaIssue {",
+    "target": "native",
+    "reason": "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions.",
+    "evidence": "docs/COVERAGE.md#closed-schema-compilation",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 187,
+    "source": "part: Some(part),",
+    "target": "native",
+    "reason": "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions.",
+    "evidence": "docs/COVERAGE.md#closed-schema-compilation",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 188,
+    "source": "field: Some(field.id.clone()),",
+    "target": "native",
+    "reason": "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions.",
+    "evidence": "docs/COVERAGE.md#closed-schema-compilation",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 189,
+    "source": "kind: SchemaIssueKind::BackendCompilation,",
+    "target": "native",
+    "reason": "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions.",
+    "evidence": "docs/COVERAGE.md#closed-schema-compilation",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 190,
+    "source": "}])",
+    "target": "native",
+    "reason": "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions.",
+    "evidence": "docs/COVERAGE.md#closed-schema-compilation",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 191,
+    "source": "})?;",
+    "target": "native",
+    "reason": "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions.",
+    "evidence": "docs/COVERAGE.md#closed-schema-compilation",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 293,
+    "source": "ValidationReason::InvalidLocation",
+    "target": "native",
+    "reason": "Exact numeric/location validation returns Some before the upstream-error mapper; remaining closed schemas can produce only Type, Enum, MinLength or MaxLength errors.",
+    "evidence": "docs/COVERAGE.md#numeric-dispatch-and-closed-error-kinds",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 298,
+    "source": "ValidationErrorKind::Minimum { .. } => ValidationReason::BelowMinimum,",
+    "target": "native",
+    "reason": "Exact numeric/location validation returns Some before the upstream-error mapper; remaining closed schemas can produce only Type, Enum, MinLength or MaxLength errors.",
+    "evidence": "docs/COVERAGE.md#numeric-dispatch-and-closed-error-kinds",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 299,
+    "source": "ValidationErrorKind::Maximum { .. } => ValidationReason::AboveMaximum,",
+    "target": "native",
+    "reason": "Exact numeric/location validation returns Some before the upstream-error mapper; remaining closed schemas can produce only Type, Enum, MinLength or MaxLength errors.",
+    "evidence": "docs/COVERAGE.md#numeric-dispatch-and-closed-error-kinds",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 302,
+    "source": "_ => ValidationReason::ConstraintViolation,",
+    "target": "native",
+    "reason": "Exact numeric/location validation returns Some before the upstream-error mapper; remaining closed schemas can produce only Type, Enum, MinLength or MaxLength errors.",
+    "evidence": "docs/COVERAGE.md#numeric-dispatch-and-closed-error-kinds",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 292,
+    "source": "let reason = if field.kind == FieldType::Location {",
+    "target": "native",
+    "reason": "number::validate always returns Some for Location, so the fallback mapper cannot receive a location field.",
+    "evidence": "docs/COVERAGE.md#numeric-dispatch-and-closed-error-kinds",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    },
+    "branch": {
+      "block": 0,
+      "id": 0
+    }
+  },
+  {
+    "file": "src/validation.rs",
+    "line": 311,
+    "source": "&& let Some(text) = value.as_str()",
+    "target": "native",
+    "reason": "Definition validation allows contact restrictions only on text fields; an accepted value with no earlier type error is necessarily a JSON string. The None arm is unreachable.",
+    "evidence": "docs/COVERAGE.md#validated-contact-text",
+    "evidence_sources": {
+      "src/validation.rs": "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763",
+      "src/number.rs": "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25",
+      "src/schema.rs": "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+    },
+    "branch": {
+      "block": 0,
+      "id": 1
+    }
+  }
+]
