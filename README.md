@@ -117,8 +117,9 @@ separation, safe diagnostics, contact-check outcomes, and change classification.
 A small exhaustive interval matrix checks loosening against real validation.
 The README example is a doctest. `Cargo.lock` records CI's resolved dependencies;
 the workflow also retains it as an artifact. No database tests are applicable
-because this crate has no storage. Tests currently execute natively; wasm is
-compile-checked, not executed in a browser.
+because this crate has no storage. The same validation and classification vectors execute natively and in the
+actual Node wasm runtime. Native LLVM reports separately measure every emitted
+source line and branch; compilation alone does not establish runtime parity.
 
 ## Integration boundaries
 

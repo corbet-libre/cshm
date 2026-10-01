@@ -107,7 +107,11 @@ fn answer_maps_reject_non_object_wire_values() {
             "private": {}
         }))
         .unwrap_err();
-        assert!(error.to_string().contains("object with distinct field identifiers"));
+        assert!(
+            error
+                .to_string()
+                .contains("object with distinct field identifiers")
+        );
     }
 }
 
