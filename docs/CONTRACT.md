@@ -17,7 +17,7 @@ cvld v0.4 community policy facade (`cmty` → `cplc` → `cshm`).
   required/filterable flags, change presets, a text-only no-contact-details
   flag, versions, and per-field change classification. Pictures are unsupported.
 - Real round-trip and failure tests; fmt, clippy with warnings denied, tests,
-  and wasm check run on GitHub Actions. No workstation builds or registry
+  and wasm check run on GitHub Actions. No registry
   publication.
 
 ## Definitions and revisions
