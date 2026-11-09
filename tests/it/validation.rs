@@ -1,9 +1,8 @@
 //! Real profile validation and JSON round trips.
-mod common;
 
 use std::cell::Cell;
 
-use common::*;
+use crate::common::*;
 use cshm::{ContactCheck, FieldType, Part, Profile, PublicProfile, Schema, ValidationReason};
 use serde_json::{Value, json};
 

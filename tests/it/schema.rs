@@ -1,7 +1,6 @@
 //! Definition invariants and wire-format rejection cases.
-mod common;
 
-use common::*;
+use crate::common::*;
 use cshm::{FieldType, Profile, PublicProfile, Schema, SchemaIssueKind};
 use serde_json::json;
 

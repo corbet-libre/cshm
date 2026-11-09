@@ -1,7 +1,6 @@
 //! Per-field change rules and validation compatibility.
-mod common;
 
-use common::*;
+use crate::common::*;
 use cshm::{
     ChangeClass, ChangeError, ChangePreset, ChangeReason, ChangeSet, FieldType, Part,
     classify_changes,

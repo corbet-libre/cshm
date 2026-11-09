@@ -1,9 +1,8 @@
 //! Failure diagnostics and policy transitions use the real schema engine.
-mod common;
 
 use std::error::Error;
 
-use common::*;
+use crate::common::*;
 use cshm::{
     ChangeClass, ChangeError, ContactCheck, FieldType, Profile, classify_changes, parse_number,
 };
