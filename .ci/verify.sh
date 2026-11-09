@@ -16,8 +16,8 @@ cargo check --locked --target wasm32-unknown-unknown
 
 version=$(python3 -c 'import tomllib; print(next(p["version"] for p in tomllib.load(open("Cargo.lock", "rb"))["package"] if p["name"] == "wasm-bindgen"))')
 archive="wasm-bindgen-${version}-x86_64-unknown-linux-musl"
-curl --user-agent cvld-security-review --fail --location --retry 3 "https://github.com/wasm-bindgen/wasm-bindgen/releases/download/${version}/${archive}.tar.gz" -o "$RUNNER_TEMP/wasm-bindgen.tar.gz"
-curl --user-agent cvld-security-review --fail --location --retry 3 "https://github.com/wasm-bindgen/wasm-bindgen/releases/download/${version}/${archive}.tar.gz.sha256sum" -o "$RUNNER_TEMP/wasm-bindgen.tar.gz.sha256sum"
+curl --user-agent cvld-security-review --fail --location --retry 3 "${WASM_BINDGEN_DOWNLOAD_BASE:-https://github.com/wasm-bindgen/wasm-bindgen/releases/download}/${version}/${archive}.tar.gz" -o "$RUNNER_TEMP/wasm-bindgen.tar.gz"
+curl --user-agent cvld-security-review --fail --location --retry 3 "${WASM_BINDGEN_DOWNLOAD_BASE:-https://github.com/wasm-bindgen/wasm-bindgen/releases/download}/${version}/${archive}.tar.gz.sha256sum" -o "$RUNNER_TEMP/wasm-bindgen.tar.gz.sha256sum"
 checksum=$(cut -d ' ' -f1 "$RUNNER_TEMP/wasm-bindgen.tar.gz.sha256sum")
 printf '%s  %s\n' "$checksum" "$RUNNER_TEMP/wasm-bindgen.tar.gz" | sha256sum --check
 tar -xzf "$RUNNER_TEMP/wasm-bindgen.tar.gz" -C "$RUNNER_TEMP"
