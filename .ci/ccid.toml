@@ -3,8 +3,17 @@ project = "cshm"
 
 [checks.verify]
 kind = "commands"
-commands = [["bash", ".ci/verify.sh"]]
-cache_tools = [["rustc", "-vV"], ["cargo", "--version"], ["curl", "--version"], ["node", "--version"], ["python3", "--version"], ["rustup", "run", "nightly", "rustc", "-vV"], ["rustup", "run", "nightly", "cargo", "llvm-cov", "--version"]]
+fleet = true
+commands = [
+  ["ccid", "first-party"],
+  ["cargo", "fmt", "--all", "--check"],
+  ["cargo", "clippy", "--locked", "--all-targets", "--", "-D", "warnings"],
+  ["cargo", "test", "--locked"],
+  ["cargo", "check", "--locked", "--target", "wasm32-unknown-unknown"],
+  ["bash", "-c", "set -euo pipefail\nPATH=\"$(ccid toolchain wasm-bindgen):$PATH\" CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner cargo test --locked --target wasm32-unknown-unknown --tests"],
+  ["ccid", "coverage", "run"],
+]
+cache_tools = [["rustc", "-vV"], ["cargo", "--version"], ["node", "--version"], ["python3", "--version"], ["rustup", "run", "nightly", "rustc", "-vV"], ["rustup", "run", "nightly", "cargo", "llvm-cov", "--version"]]
 cache_outputs = ["coverage.json", "coverage.lcov", "coverage.txt"]
 
 [checks.advisories]
@@ -18,10 +27,194 @@ scheduler = "forgejo"
 runs_on = "linux"
 checks = ["verify", "advisories"]
 workflow = "ci"
-command = ["bash", ".ci/run-cached.sh"]
+command = ["ccid:run-declared-checks"]
 events = ["manual"]
 
 [check_shell]
 
 [security]
 dependencies = "cargo-deny"
+
+[runtime]
+tools = ["nodejs_22", "python3", "cargo-deny", "cargo-llvm-cov"]
+
+[toolchain]
+nightly = true
+targets = ["stable:wasm32-unknown-unknown"]
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 185
+source = ".map_err(|_| {"
+reason = "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions."
+evidence = "docs/COVERAGE.md#closed-schema-compilation"
+targets = ["native"]
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 186
+source = "SchemaErrors(vec![SchemaIssue {"
+reason = "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions."
+evidence = "docs/COVERAGE.md#closed-schema-compilation"
+targets = ["native"]
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 187
+source = "part: Some(part),"
+reason = "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions."
+evidence = "docs/COVERAGE.md#closed-schema-compilation"
+targets = ["native"]
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 188
+source = "field: Some(field.id.clone()),"
+reason = "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions."
+evidence = "docs/COVERAGE.md#closed-schema-compilation"
+targets = ["native"]
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 189
+source = "kind: SchemaIssueKind::BackendCompilation,"
+reason = "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions."
+evidence = "docs/COVERAGE.md#closed-schema-compilation"
+targets = ["native"]
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 190
+source = "}])"
+reason = "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions."
+evidence = "docs/COVERAGE.md#closed-schema-compilation"
+targets = ["native"]
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 191
+source = "})?;"
+reason = "Definition validation and the closed field_schema constructor produce valid Draft 2020-12 schemas without references or user-supplied schema keywords; this defensive backend-compilation error mapper is unreachable for accepted definitions."
+evidence = "docs/COVERAGE.md#closed-schema-compilation"
+targets = ["native"]
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 293
+source = "ValidationReason::InvalidLocation"
+reason = "Exact numeric/location validation returns Some before the upstream-error mapper; remaining closed schemas can produce only Type, Enum, MinLength or MaxLength errors."
+evidence = "docs/COVERAGE.md#numeric-dispatch-and-closed-error-kinds"
+targets = ["native"]
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 298
+source = "ValidationErrorKind::Minimum { .. } => ValidationReason::BelowMinimum,"
+reason = "Exact numeric/location validation returns Some before the upstream-error mapper; remaining closed schemas can produce only Type, Enum, MinLength or MaxLength errors."
+evidence = "docs/COVERAGE.md#numeric-dispatch-and-closed-error-kinds"
+targets = ["native"]
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 299
+source = "ValidationErrorKind::Maximum { .. } => ValidationReason::AboveMaximum,"
+reason = "Exact numeric/location validation returns Some before the upstream-error mapper; remaining closed schemas can produce only Type, Enum, MinLength or MaxLength errors."
+evidence = "docs/COVERAGE.md#numeric-dispatch-and-closed-error-kinds"
+targets = ["native"]
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 302
+source = "_ => ValidationReason::ConstraintViolation,"
+reason = "Exact numeric/location validation returns Some before the upstream-error mapper; remaining closed schemas can produce only Type, Enum, MinLength or MaxLength errors."
+evidence = "docs/COVERAGE.md#numeric-dispatch-and-closed-error-kinds"
+targets = ["native"]
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 292
+source = "let reason = if field.kind == FieldType::Location {"
+reason = "number::validate always returns Some for Location, so the fallback mapper cannot receive a location field."
+evidence = "docs/COVERAGE.md#numeric-dispatch-and-closed-error-kinds"
+targets = ["native"]
+
+[coverage.exclusions.branch]
+block = 0
+id = 0
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
+
+[[coverage.exclusions]]
+file = "src/validation.rs"
+line = 311
+source = "&& let Some(text) = value.as_str()"
+reason = "Definition validation allows contact restrictions only on text fields; an accepted value with no earlier type error is necessarily a JSON string. The None arm is unreachable."
+evidence = "docs/COVERAGE.md#validated-contact-text"
+targets = ["native"]
+
+[coverage.exclusions.branch]
+block = 0
+id = 1
+
+[coverage.exclusions.evidence_sources]
+"src/number.rs" = "b62524665864caf49cb0381aa77d3e5a93ee6174e3f6db6944925b646cb3ad25"
+"src/schema.rs" = "ca5f35b7e8f21d6dd75dfaa3a93d15a0b95958ebcdd0915dd9c5b602085c98d1"
+"src/validation.rs" = "1a9e4aad75fb26635d89970376ba33e2852409a6e7803135e7c8ddb0b379b763"
